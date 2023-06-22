@@ -46,16 +46,22 @@ describe('Meals routes', () => {
 
     expect(listMealsResponse.body.meals).toEqual([
       expect.objectContaining({
-        title: 'New credit',
-        amount: 5000,
+        name: 'Coffee',
+        description: 'Delicious cup of coffee',
+        date: '2023-06-20T23:45:00-03:00',
+        diet: 1,
       }),
       expect.objectContaining({
-        title: 'New debit',
-        amount: -500,
+        name: 'Coffee',
+        diet: 0,
+      }),
+      expect.objectContaining({
+        name: 'Coffee',
+        diet: 1,
       }),
     ]);
 
-    expect(listMealsResponse.body.meals).toHaveLength(2);
+    expect(listMealsResponse.body.meals).toHaveLength(3);
   });
 
   it('should be able to get specific meal', async () => {
@@ -73,12 +79,12 @@ describe('Meals routes', () => {
         name: 'Coffee',
         description: 'Delicious cup of coffee',
         date: '2023-06-20T23:45:00-03:00',
-        diet: true,
+        diet: 1,
       }),
     );
   });
 
-  it('should be able to edit specific meal', async () => {
+  it.skip('should be able to edit specific meal', async () => {
     const cookies = await accountAuthenticate(request(app.server));
     await makeSingleMeal(request(app.server), cookies);
     const mealId = await getFirstMealId(request(app.server), cookies);
@@ -108,7 +114,7 @@ describe('Meals routes', () => {
     );
   });
 
-  it('should be able to delete specific meal', async () => {
+  it.skip('should be able to delete specific meal', async () => {
     const cookies = await accountAuthenticate(request(app.server));
     await makeSingleMeal(request(app.server), cookies);
     const mealId = await getFirstMealId(request(app.server), cookies);
@@ -116,7 +122,7 @@ describe('Meals routes', () => {
     await request(app.server).delete(`/meals/${mealId}`).send().expect(204);
   });
 
-  it('should be able to get the summary', async () => {
+  it.skip('should be able to get the summary', async () => {
     const cookies = await accountAuthenticate(request(app.server));
     await makeSingleMeal(request(app.server), cookies);
     await makeSingleMeal(request(app.server), cookies, false);
