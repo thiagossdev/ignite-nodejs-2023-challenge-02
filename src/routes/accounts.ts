@@ -19,7 +19,7 @@ export async function accountsRoutes(app: FastifyInstance): Promise<void> {
 
     let accountId;
     const account = await knex(resource)
-      .select('*')
+      .select()
       .where({
         document,
       })

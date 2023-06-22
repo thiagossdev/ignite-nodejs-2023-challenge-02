@@ -84,13 +84,14 @@ describe('Meals routes', () => {
     );
   });
 
-  it.skip('should be able to edit specific meal', async () => {
+  it('should be able to edit specific meal', async () => {
     const cookies = await accountAuthenticate(request(app.server));
     await makeSingleMeal(request(app.server), cookies);
     const mealId = await getFirstMealId(request(app.server), cookies);
 
     await request(app.server)
       .put(`/meals/${mealId}`)
+      .set('Cookie', cookies)
       .send({
         name: 'Coffee & Chocolate',
         description: 'Chooooooocolate!!! 💓 And coffee. ☕',
@@ -109,20 +110,29 @@ describe('Meals routes', () => {
         name: 'Coffee & Chocolate',
         description: 'Chooooooocolate!!! 💓 And coffee. ☕',
         date: '2023-06-20T23:45:00-03:00',
-        diet: false,
+        diet: 0,
       }),
     );
   });
 
-  it.skip('should be able to delete specific meal', async () => {
+  it('should be able to delete specific meal', async () => {
     const cookies = await accountAuthenticate(request(app.server));
     await makeSingleMeal(request(app.server), cookies);
     const mealId = await getFirstMealId(request(app.server), cookies);
 
-    await request(app.server).delete(`/meals/${mealId}`).send().expect(204);
+    await request(app.server)
+      .delete(`/meals/${mealId}`)
+      .set('Cookie', cookies)
+      .send()
+      .expect(204);
+
+    await request(app.server)
+      .get(`/meals/${mealId}`)
+      .set('Cookie', cookies)
+      .expect(404);
   });
 
-  it.skip('should be able to get the summary', async () => {
+  it('should be able to get the summary', async () => {
     const cookies = await accountAuthenticate(request(app.server));
     await makeSingleMeal(request(app.server), cookies);
     await makeSingleMeal(request(app.server), cookies, false);
